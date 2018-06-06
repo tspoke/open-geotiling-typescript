@@ -85,7 +85,6 @@ export default class TileAreaPolygonalBuilder {
         }
       } //coordinate is invalid else; skip it
     });
-
     return this;
   }
 

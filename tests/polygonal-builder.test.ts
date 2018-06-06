@@ -51,8 +51,8 @@ describe("PolygonalBuilderTest", () => {
 
     expect(testTileArea).to.not.equal(null);
     expect(testTileArea.contains(corner1)).to.equal(true, "Contains area near corner 1");
-    // expect(testTileArea.contains(corner2)).to.equal(true, "Contains area near corner 2");
-    // expect(testTileArea.contains(corner3)).to.equal(true, "Contains area near corner 3");
+    expect(testTileArea.contains(corner2)).to.equal(true, "Contains area near corner 2");
+    expect(testTileArea.contains(corner3)).to.equal(true, "Contains area near corner 3");
     expect(testTileArea.contains(corner4)).to.equal(true, "Contains area near corner 4");
     expect(testTileArea.contains(center)).to.equal(true, "Contains center");
   });
@@ -124,11 +124,8 @@ describe("PolygonalBuilderTest", () => {
 
     //our area contains one full REGION but no full GLOBAL tile, so we expect the first two
     //to be of equal size, but the third one to be bigger (-1+400 = +399, to be exact)
-    console.log(numTilesGlobalArray);
-    console.log(numTilesRegionArray);
-    console.log(numTilesDistrictArray);
-    expect(numTilesGlobalArray).to.equal(numTilesRegionArray);
-    expect(numTilesRegionArray + 399).to.equal(numTilesDistrictArray);
+    expect(numTilesGlobalArray).to.equal(numTilesRegionArray, "global should be equal to region");
+    expect(numTilesRegionArray + 399).to.equal(numTilesDistrictArray, "region + 399 == district");
   });
 });
 
