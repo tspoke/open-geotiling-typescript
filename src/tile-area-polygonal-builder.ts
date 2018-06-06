@@ -3,6 +3,7 @@ import Coordinate from "./coordinate";
 import TileArea from "./tile-area";
 import OpenGeoTile from "./index";
 import MergingTileArea from "./merging-tile-area";
+import OpenLocationCode from "open-location-code-typescript";
 
 export default class TileAreaPolygonalBuilder {
   //min/max values for latitude and longitude in degrees.
@@ -116,11 +117,12 @@ export default class TileAreaPolygonalBuilder {
     //border tiles in some situations
     const minOGT: OpenGeoTile = OpenGeoTile.buildFromLatitudeAndLongitude(this.bboxMin.getLatitude(), this.bboxMin.getLongitude(), this.precision);
     const maxOGT: OpenGeoTile = OpenGeoTile.buildFromLatitudeAndLongitude(this.bboxMax.getLatitude(), this.bboxMax.getLongitude(), this.precision);
-    const minLatitude = minOGT.getWrappedOpenLocationCode().decode().getCenterLatitude() - increment;
-    const maxLatitude = maxOGT.getWrappedOpenLocationCode().decode().getCenterLatitude() + increment;
-    const minLongitude = minOGT.getWrappedOpenLocationCode().decode().getCenterLongitude() - increment;
-    const maxLongitude = maxOGT.getWrappedOpenLocationCode().decode().getCenterLongitude() + increment;
+    const minLatitude = OpenLocationCode.decode(minOGT.getWrappedOpenLocationCode().getCode()).latitudeCenter - increment;
+    const maxLatitude = OpenLocationCode.decode(maxOGT.getWrappedOpenLocationCode().getCode()).latitudeCenter + increment;
+    const minLongitude = OpenLocationCode.decode(minOGT.getWrappedOpenLocationCode().getCode()).longitudeCenter - increment;
+    const maxLongitude = OpenLocationCode.decode(maxOGT.getWrappedOpenLocationCode().getCode()).longitudeCenter + increment;
 
+    console.log(minLatitude, maxLatitude, minLongitude, maxLongitude);
     //loop through latitude ("scanlines")
     for (let latitude = minLatitude; latitude < maxLatitude; latitude += increment) {
 

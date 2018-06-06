@@ -21,3 +21,4 @@ describe("MemberTest", () => {
     expect(smallBlock.contains(tinyBlock)).to.equal(false);
   });
 });
+

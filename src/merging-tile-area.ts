@@ -87,7 +87,7 @@ export default class MergingTileArea extends TileArea {
         //is not contained yet, either; if it was, the initial call to contains() would have
         //returned true;
         delete this.tilesHashMap[tilePrefix];
-        const biggerTile: OpenGeoTile = new OpenGeoTile(newTile.getTileAddressPrefix());
+        const biggerTile: OpenGeoTile = OpenGeoTile.buildFromTileAddress(newTile.getTileAddressPrefix());
         this.addNonContainedTile(biggerTile);
       }
     } else {

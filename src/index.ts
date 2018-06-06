@@ -39,13 +39,13 @@ export default class OpenGeoTile {
    * too much padding for given tileSize
    */
   public constructor(olc: OpenLocationCode, tileSize: TileSize = null) {
-    if (!OpenLocationCode.isFull(olc.code)) {
+    if (!olc || !olc.getCode || !OpenLocationCode.isFull(olc.getCode())) {
       throw new Error("Only full OLC supported. Use recover().");
     }
 
     if (!tileSize) {
       let codeLength;
-      if (OpenLocationCode.isPadded(olc.getCode())) {
+      if (olc.isPadded()) {
         codeLength = olc.getCode().indexOf(OpenGeoTile.PADDING_CHARACTER);
       } else {
         codeLength = Math.min(olc.getCode().length() - 1, 10);
@@ -67,7 +67,7 @@ export default class OpenGeoTile {
         this.mTileSize = TileSize.PINPOINT;
       }
     } else {
-      if (OpenLocationCode.isPadded(olc.getCode())) {
+      if (olc.isPadded()) {
         if (olc.getCode().indexOf(OpenGeoTile.PADDING_CHARACTER) < tileSize.getCodeLength()) {
           throw new Error("OLC padding larger than allowed by tileSize");
         }
@@ -87,7 +87,8 @@ export default class OpenGeoTile {
    *         {@link OpenLocationCode#OpenLocationCode(double, double, int)}
    */
   public static buildFromLatitudeAndLongitude(latitude: number, longitude: number, tileSize: TileSize): OpenGeoTile {
-    return new OpenGeoTile(new OpenLocationCode(latitude, longitude, TileSize.PINPOINT.getCodeLength()), tileSize);
+    const plusCode = OpenLocationCode.encode(latitude, longitude, TileSize.PINPOINT.getCodeLength());
+    return OpenGeoTile.buildFromPlusCode(plusCode, tileSize);
   }
 
   /**
@@ -221,9 +222,9 @@ export default class OpenGeoTile {
     const deltas: number[] = [20.0, 1.0, 0.05, 0.0025, 0.000125];
     const delta: number = deltas[(this.getTileSize().getCodeLength() - 2) / 2];
 
-    const codeArea: OpenLocationCode.CodeArea = this.mOpenLocationCode.decode();
-    const latitude: number = codeArea.getCenterLatitude();
-    const longitude: number = codeArea.getCenterLongitude();
+    const codeArea: OpenLocationCode.CodeArea = OpenLocationCode.decode(this.mOpenLocationCode.code);
+    const latitude: number = codeArea.latitudeCenter;
+    const longitude: number = codeArea.longitudeCenter;
 
     const latDiff: number[] = [+1, +1, +1, 0, -1, -1, -1, 0];
     const lngDiff: number[] = [-1, 0, +1, +1, +1, 0, -1, -1];
