@@ -91,5 +91,44 @@ describe("PolygonalBuilderTest", () => {
     expect(testTileArea).to.not.equal(null);
     expect(testTileArea.contains(ogt)).to.equal(true);
   });
+
+  it("testMaximumMerge", () => {
+    const coords: Coordinate[] = [];
+    coords.push(new Coordinate(0.9, 0.9));
+    coords.push(new Coordinate(0.9, 2.1));
+    coords.push(new Coordinate(2.1, 2.1));
+    coords.push(new Coordinate(2.1, 0.9));
+
+    //no maximum tile size, builds a TileArea with potentially GLOBAL-sized tiles
+    const testTileArea1 = new TileAreaPolygonalBuilder()
+      .setPrecision(TileSize.DISTRICT)
+      .setCoordinatesList(coords)
+      .build();
+    const numTilesGlobalArray = testTileArea1.getCoveringTileArrayList().length;
+
+    //builds a TileArea with potentially REGION-sized tiles
+    const testTileArea2 = new TileAreaPolygonalBuilder()
+      .setPrecision(TileSize.DISTRICT)
+      .setMaximumTileSize(TileSize.REGION)
+      .setCoordinatesList(coords)
+      .build();
+    const numTilesRegionArray = testTileArea2.getCoveringTileArrayList().length;
+
+    //builds a TileArea with potentially DISTRICT-sized tiles
+    const testTileArea3 = new TileAreaPolygonalBuilder()
+      .setPrecision(TileSize.DISTRICT)
+      .setMaximumTileSize(TileSize.DISTRICT)
+      .setCoordinatesList(coords)
+      .build();
+    const numTilesDistrictArray = testTileArea3.getCoveringTileArrayList().length;
+
+    //our area contains one full REGION but no full GLOBAL tile, so we expect the first two
+    //to be of equal size, but the third one to be bigger (-1+400 = +399, to be exact)
+    console.log(numTilesGlobalArray);
+    console.log(numTilesRegionArray);
+    console.log(numTilesDistrictArray);
+    expect(numTilesGlobalArray).to.equal(numTilesRegionArray);
+    expect(numTilesRegionArray + 399).to.equal(numTilesDistrictArray);
+  });
 });
 

@@ -14,6 +14,7 @@ export default class TileAreaPolygonalBuilder {
 
   //internal state, updated by set* methods
   private precision: TileSize = TileSize.DISTRICT;
+  private maximumTileSize: TileSize = null;
   private coordinates: Coordinate[] = null;
   private bboxMin: Coordinate;
   private bboxMax: Coordinate;
@@ -33,14 +34,25 @@ export default class TileAreaPolygonalBuilder {
   }
 
   /**
+   * Set the maximum tile size of {@link OpenGeoTile} that should be contained
+   * in the resulting {@link TileArea}
+   * @param maximumTileSize the maximum TileSize that should be returned by this builder
+   * @return this object, to chain additional setters
+   */
+  public setMaximumTileSize(maximumTileSize: TileSize): TileAreaPolygonalBuilder {
+    this.maximumTileSize = maximumTileSize;
+    return this;
+  }
+
+  /**
    * Set an array of coordinates, which will be interpreted as vertices of a closed polygon
-   * @param coordinates an array of {@link Coordinate}. Coordinates that are not valid
+   * @param coords an array of {@link Coordinate}. Coordinates that are not valid
    *                    latitude/longitude pairs will be dropped, the remaining list needs to
    *                    contain at least three elements to form a valid polygon. The list is not
    *                    checked for problems such as self-intersection.
    * @return this object, to chain additional setters
    */
-  public setCoordinatesList(coordinates: Coordinate[]): TileAreaPolygonalBuilder {
+  public setCoordinatesList(coords: Coordinate[]): TileAreaPolygonalBuilder {
     this.coordinates = [];
 
     //set bounding box to inverted values;
@@ -49,7 +61,7 @@ export default class TileAreaPolygonalBuilder {
 
     //filter invalid coordinates, update bounding box
 
-    coordinates.forEach(coordinate => {
+    coords.forEach(coordinate => {
       if (coordinate.getLatitude() >= TileAreaPolygonalBuilder.LATITUDE_MIN
         && coordinate.getLatitude() <= TileAreaPolygonalBuilder.LATITUDE_MAX
         && coordinate.getLongitude() >= TileAreaPolygonalBuilder.LONGITUDE_MIN
@@ -105,7 +117,10 @@ export default class TileAreaPolygonalBuilder {
       return null;
     }
 
-    const rasterizedArea: TileArea = new MergingTileArea();
+    let rasterizedArea: MergingTileArea = new MergingTileArea();
+    if (this.maximumTileSize !== undefined && this.maximumTileSize !== null) {
+      rasterizedArea.withMaxTileSize(this.maximumTileSize);
+    }
 
     //rasterize polygon using scanlines, based on public-domain code by Darel Rex Finley, 2007;
     //http://alienryderflex.com/polygon_fill/
@@ -122,7 +137,6 @@ export default class TileAreaPolygonalBuilder {
     const minLongitude = OpenLocationCode.decode(minOGT.getWrappedOpenLocationCode().getCode()).longitudeCenter - increment;
     const maxLongitude = OpenLocationCode.decode(maxOGT.getWrappedOpenLocationCode().getCode()).longitudeCenter + increment;
 
-    console.log(minLatitude, maxLatitude, minLongitude, maxLongitude);
     //loop through latitude ("scanlines")
     for (let latitude = minLatitude; latitude < maxLatitude; latitude += increment) {
 
