@@ -39,7 +39,7 @@ export default class OpenGeoTile {
    * too much padding for given tileSize
    */
   public constructor(olc: OpenLocationCode, tileSize: TileSize = null) {
-    if (!olc.isFull()) {
+    if (!OpenLocationCode.isFull(olc.code)) {
       throw new Error("Only full OLC supported. Use recover().");
     }
 
@@ -142,7 +142,8 @@ export default class OpenGeoTile {
       throw new Error("Invalid tile address");
     }
 
-    return new OpenGeoTile(new OpenLocationCode(olcBuilder.toString()), detectedTileSize);
+    const olc = new OpenLocationCode(olcBuilder);
+    return new OpenGeoTile(olc, detectedTileSize);
   }
 
   /**
@@ -154,7 +155,7 @@ export default class OpenGeoTile {
    */
   public static buildFromPlusCode(pluscode: string, tileSize: TileSize): OpenGeoTile {
     let intermediate: OpenLocationCode = new OpenLocationCode(pluscode);
-    if (!intermediate.isFull()) {
+    if (!OpenLocationCode.isFull(pluscode)) {
       throw new Error("Only full OLC supported. Use recover().");
     }
     return new OpenGeoTile(intermediate, tileSize);
@@ -207,7 +208,7 @@ export default class OpenGeoTile {
    * @return a plus code for the whole tile, probably padded with '0' characters
    */
   public getTileOpenLocationCode(): OpenLocationCode {
-    const intermediate: OpenGeoTile = new OpenGeoTile(this.getTileAddress());
+    const intermediate: OpenGeoTile = OpenGeoTile.buildFromTileAddress(this.getTileAddress());
     return intermediate.getWrappedOpenLocationCode();
   }
 

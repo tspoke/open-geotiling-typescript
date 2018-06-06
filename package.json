@@ -24,7 +24,7 @@
     "typescript": "2.6.1"
   },
   "dependencies": {
-    "open-location-code-typescript": "1.0.0"
+    "open-location-code-typescript": "1.0.2"
   },
   "private": false
 }
