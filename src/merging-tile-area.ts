@@ -63,7 +63,21 @@ export default class MergingTileArea extends TileArea {
 
   public getCoveringTileArrayList(): OpenGeoTile[] {
     const output: OpenGeoTile[] = [];
-    Object.keys(this.tilesHashMap).forEach(k => output.push(this.tilesHashMap[k]));
+    Object.keys(this.tilesHashMap).forEach(k => {
+      this.tilesHashMap[k].forEach(tile => output.push(tile));
+    });
+    return output;
+  }
+
+  public getTilesForPrecision(tileSize: TileSize): OpenGeoTile[] {
+    const output: OpenGeoTile[] = [];
+    Object.keys(this.tilesHashMap).forEach(k => {
+      if (this.tilesHashMap[k].length > 0) {
+        if (k.length + 2 === tileSize.getCodeLength()) {
+          this.tilesHashMap[k].forEach(tile => output.push(tile));
+        }
+      }
+    });
     return output;
   }
 
@@ -72,14 +86,15 @@ export default class MergingTileArea extends TileArea {
     if (tilePrefix.length === 0) {
       tilePrefix = MergingTileArea.GLOBAL_KEY;
     }
+
     if (this.tilesHashMap[tilePrefix]) {
       const tiles: OpenGeoTile[] = this.tilesHashMap[tilePrefix];
       //we're NOT merging the group of tiles this newTile belongs to, if
-      //adding a tile means that this would still not be a complete bigger tile; add it	            // 1. the group is not complete yet
+      //adding a tile means that this would still not be a complete bigger tile; add it
+      // 1. the group is not complete yet
       // 2. the group already consists of GLOBAL-sized tiles
       // 3. the tile size already is or exceeds the maximum allowed tile size
-      if (tiles.length < this.subtilesPerTile - 1
-        || tilePrefix === MergingTileArea.GLOBAL_KEY
+      if (tiles.length < this.subtilesPerTile - 1 || tilePrefix === MergingTileArea.GLOBAL_KEY
         || newTile.getTileAddress().length <= this.maxAllowedTileSize.getCodeLength()) {
         //adding a tile means that this would still not be a complete bigger tile; add it
         tiles.push(newTile);

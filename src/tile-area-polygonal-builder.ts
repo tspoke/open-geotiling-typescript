@@ -71,7 +71,6 @@ export default class TileAreaPolygonalBuilder {
         if (coordinate.getLatitude() < this.bboxMin.getLatitude()) {
           this.bboxMin.setLatitude(coordinate.getLatitude());
         }
-
         if (coordinate.getLatitude() > this.bboxMax.getLatitude()) {
           this.bboxMax.setLatitude(coordinate.getLatitude());
         }
@@ -79,7 +78,6 @@ export default class TileAreaPolygonalBuilder {
         if (coordinate.getLongitude() < this.bboxMin.getLongitude()) {
           this.bboxMin.setLongitude(coordinate.getLongitude());
         }
-
         if (coordinate.getLongitude() > this.bboxMax.getLongitude()) {
           this.bboxMax.setLongitude(coordinate.getLongitude());
         }
@@ -123,7 +121,6 @@ export default class TileAreaPolygonalBuilder {
 
     //rasterize polygon using scanlines, based on public-domain code by Darel Rex Finley, 2007;
     //http://alienryderflex.com/polygon_fill/
-
     const increment = this.precision.getCoordinateIncrement();
 
     //determine min and max latitude/longitude we want to use

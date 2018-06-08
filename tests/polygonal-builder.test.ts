@@ -39,8 +39,8 @@ describe("PolygonalBuilderTest", () => {
     coords.push(new Coordinate(1.0, 0.0));
 
     const corner1 = OpenGeoTile.buildFromLatitudeAndLongitude(0.01, 0.01, TileSize.NEIGHBORHOOD);
-    const corner2 = OpenGeoTile.buildFromLatitudeAndLongitude(0.01, 0.99, TileSize.NEIGHBORHOOD);
-    const corner3 = OpenGeoTile.buildFromLatitudeAndLongitude(0.99, 0.99, TileSize.NEIGHBORHOOD);
+    const corner2 = OpenGeoTile.buildFromLatitudeAndLongitude(0.01, 0.95, TileSize.NEIGHBORHOOD);
+    const corner3 = OpenGeoTile.buildFromLatitudeAndLongitude(0.99, 0.95, TileSize.NEIGHBORHOOD);
     const corner4 = OpenGeoTile.buildFromLatitudeAndLongitude(0.99, 0.01, TileSize.NEIGHBORHOOD);
     const center = OpenGeoTile.buildFromLatitudeAndLongitude(0.5, 0.5, TileSize.NEIGHBORHOOD);
 
