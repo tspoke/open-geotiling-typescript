@@ -1,6 +1,6 @@
 import TileArea from "./tile-area";
 import TileSize from "./tile-size";
-import OpenGeoTile from "./index";
+import OpenGeoTile from "./open-geo-tile";
 
 export default class MergingTileArea extends TileArea {
   private static readonly MIN_SUBTILES_PER_TILE = 2; //0 or 1 would lead to all additions snowballing into a full global tile immediately.

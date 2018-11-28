@@ -5,7 +5,7 @@ import TileAreaPolygonalBuilder from "../src/tile-area-polygonal-builder";
 import Coordinate from "../src/coordinate";
 import MergingTileArea from "../src/merging-tile-area";
 
-describe.skip("Custom tests", () => {
+describe.only("Custom tests", () => {
 
   it("Small square test", () => {
     const coords = [];
@@ -40,5 +40,27 @@ describe.skip("Custom tests", () => {
       found++;
     });
     expect(found).to.equal(4);
+  });
+
+  it.only("Big square test", () => {
+    const coords = [];
+    coords.push(new Coordinate(47.470562, -0.563563));
+    coords.push(new Coordinate(47.473438, -0.558688));
+    coords.push(new Coordinate(47.478062, -0.554688));
+    coords.push(new Coordinate(47.473687, -0.545313));
+    coords.push(new Coordinate(47.470187, -0.548063));
+    coords.push(new Coordinate(47.466562, -0.553062));
+
+    const testTileArea = new TileAreaPolygonalBuilder()
+      .setPrecision(TileSize.PINPOINT)
+      .setMaximumTileSize(TileSize.NEIGHBORHOOD)
+      .setCoordinatesList(coords)
+      .build();
+
+    console.log("LENGTH NEIGHBORHOOD => " + (<MergingTileArea> testTileArea).getTilesForPrecision(TileSize.NEIGHBORHOOD).length);
+    (<MergingTileArea> testTileArea).getTilesForPrecision(TileSize.NEIGHBORHOOD).forEach(t => {
+      console.log(t.getTileOpenLocationCode().getCode());
+    });
+    console.log("LENGTH PINPOINT => " + (<MergingTileArea> testTileArea).getTilesForPrecision(TileSize.PINPOINT).length);
   });
 });

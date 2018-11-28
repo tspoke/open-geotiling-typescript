@@ -1,11 +1,12 @@
 {
   "compilerOptions": {
     "lib": [
-      "es6", "dom"
+      "es6",
+      "dom"
     ],
     "module": "commonjs",
     "noImplicitReturns": true,
-    "allowJs": true,
+    "declaration": true,
     "outDir": "dist",
     "sourceMap": true,
     "target": "es6",

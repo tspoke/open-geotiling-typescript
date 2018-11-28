@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import "mocha";
-import OpenGeoTile from "./../src/index";
+import OpenGeoTile from "../src/open-geo-tile";
 
 describe("DirectionTest", () => {
   it("testDirections", () => {

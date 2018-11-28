@@ -1,6 +1,6 @@
 import "mocha";
 import {expect} from "chai";
-import OpenGeoTile from "./../src/index";
+import OpenGeoTile from "../src/open-geo-tile";
 
 describe("MemberTest", () => {
   it("testMembership", () => {

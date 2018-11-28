@@ -1,6 +1,6 @@
 import "mocha";
 import {expect} from "chai";
-import OpenGeoTile from "./../src/index";
+import OpenGeoTile from "../src/open-geo-tile";
 import TileSize from "./../src/tile-size";
 import Coordinate from "./../src/coordinate";
 import TileAreaPolygonalBuilder from "./../src/tile-area-polygonal-builder";

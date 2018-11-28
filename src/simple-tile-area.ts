@@ -1,6 +1,6 @@
 import TileArea from "./tile-area";
 import TileSize from "./tile-size";
-import OpenGeoTile from "./index";
+import OpenGeoTile from "./open-geo-tile";
 
 export default class SimpleTileArea extends TileArea {
   private tiles: OpenGeoTile[] = [];

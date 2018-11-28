@@ -1,7 +1,7 @@
 import TileSize from "./tile-size";
 import Coordinate from "./coordinate";
 import TileArea from "./tile-area";
-import OpenGeoTile from "./index";
+import OpenGeoTile from "./open-geo-tile";
 import MergingTileArea from "./merging-tile-area";
 import OpenLocationCode from "open-location-code-typescript";
 
@@ -114,7 +114,7 @@ export default class TileAreaPolygonalBuilder {
       return null;
     }
 
-    let rasterizedArea: MergingTileArea = new MergingTileArea();
+    const rasterizedArea: MergingTileArea = new MergingTileArea();
     if (this.maximumTileSize !== undefined && this.maximumTileSize !== null) {
       rasterizedArea.withMaxTileSize(this.maximumTileSize);
     }

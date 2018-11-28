@@ -2,7 +2,7 @@ import OpenLocationCode from "open-location-code-typescript";
 /**
  * An area defined by one or more {@link OpenGeoTile} tiles
  */
-import OpenGeoTile from "./index";
+import OpenGeoTile from "./open-geo-tile";
 import TileSize from "./tile-size";
 
 export default abstract class TileArea {
